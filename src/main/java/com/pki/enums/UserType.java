@@ -48,7 +48,7 @@ public enum UserType {
 			return UserType.ADMIN;
 		
 		default:
-			return null;
+			return UserType.PTUSER;
 		}
 	}
 	

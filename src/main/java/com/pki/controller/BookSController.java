@@ -5,6 +5,8 @@ import com.pki.entity.User;
 import com.pki.enums.CAState;
 import com.pki.service.Impl.CABookService;
 import com.pki.service.Impl.UserService;
+import com.pki.utils.BookUtils;
+import com.pki.utils.PropertiesUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +31,7 @@ import java.util.List;
 @RequestMapping("books")
 public class BookSController extends BaseController {
 
-    private static Logger logger= LoggerFactory.getLogger(BookSController.class);
+    private static Logger logger = LoggerFactory.getLogger(BookSController.class);
     /**
      *
      */
@@ -53,10 +55,11 @@ public class BookSController extends BaseController {
             Date d = new Date();
             SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
             String url = f.format(d);
-            String caUrl = "d:/" + user.getUName() + url + ".keystore";
+            String bookPath = PropertiesUtils.getBookPath();
+            String caUrl = bookPath + user.getUName() + url + ".keystore";
             cabook.setCaUrl(caUrl);
             cABookService.Save(cabook);
-            genkey(cabook);
+            BookUtils.genkey(cabook);
             return "success";
         }
     }
@@ -132,8 +135,8 @@ public class BookSController extends BaseController {
 
             Cabook cabook = cABookService.getCaBookById(caBookId);
             System.out.println("------------>>" + cabook.getCaCn());
-
-            export(cabook);
+            BookUtils.export(cabook, user);
+            cABookService.updata(cabook);
             return "getbookcar";
         }
     }
@@ -190,79 +193,5 @@ public class BookSController extends BaseController {
             }
         }
         return null;
-    }
-    //--------------------
-
-    /**
-     * 生成密钥
-     */
-    public void genkey(Cabook cabook) {
-        String[] arstringCommand = new String[]{
-                "cmd ", "/k",
-                "start", // cmd Shell命令
-                "G:\\java\\jdk1.8.0_91\\bin\\keytool",
-                "-genkey", // -genkey表示生成密钥
-                "-validity", // -validity指定证书有效期(单位：天)，这里是36500天
-                "36500",
-                "-keysize",//     指定密钥长度
-                "1024",
-                "-alias", // -alias指定别名，这里是ss
-                "ss",
-                "-keyalg", // -keyalg 指定密钥的算法 (如 RSA DSA（如果不指定默认采用DSA）)
-                "RSA",
-                "-keystore", // -keystore指定存储位置，这里是d:/demo.keystore
-                cabook.getCaUrl(),
-                "-dname",// CN=(名字与姓氏), OU=(组织单位名称), O=(组织名称), L=(城市或区域名称),
-                // ST=(州或省份名称), C=(单位的两字母国家代码)"
-                "CN=(" + cabook.getCaCn() + "), OU=(" + cabook.getCaOu() + "), O=(" + cabook.getCaO() + "), L=(" + cabook.getCaL() + "),ST=("
-                        + cabook.getCaSt() + "), C=(" + cabook.getCaC() + ")",
-                "-storepass", // 指定密钥库的密码(获取keystore信息所需的密码)
-                "123456",
-                "-keypass",// 指定别名条目的密码(私钥的密码)
-                cabook.getCaKeypass(),
-                "-v"// -v 显示密钥库中的证书详细信息
-        };
-
-        execCommand(arstringCommand);
-    }
-
-    /**
-     * 管理员 导出证书文件
-     */
-    public void export(Cabook cabook) {
-        User user = userService.getUserById(cabook.getUId());
-        String url = "d:/" + user.getUName() + cabook.getCaId() + ".cer";
-        String[] arstringCommand = new String[]{
-
-                "cmd ", "/k",
-                "start", // cmd Shell命令
-                "G:\\java\\jdk1.8.0_91\\bin\\keytool",
-                "-export", // - export指定为导出操作
-                "-keystore", // -keystore指定keystore文件，这里是d:/demo.keystore
-                cabook.getCaUrl(),
-                "-alias", // -alias指定别名，这里是ss
-                "ss",
-                "-file",//-file指向导出路径
-                "d:/" + user.getUName() + cabook.getCaId() + ".cer",
-                "-storepass",// 指定密钥库的密码
-                "123456"
-        };
-        execCommand(arstringCommand);
-        cabook.setCaStart(CAState.PASS.getDiscribe());
-        cabook.setCaUrl(url);
-        cABookService.updata(cabook);
-
-    }
-
-    public void execCommand(String[] arstringCommand) {
-        for (int i = 0; i < arstringCommand.length; i++) {
-            System.out.print(arstringCommand[i] + " ");
-        }
-        try {
-            Runtime.getRuntime().exec(arstringCommand);
-
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
     }
 }

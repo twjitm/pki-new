@@ -3,6 +3,7 @@ package com.pki.controller;
 import com.pki.entity.User;
 import com.pki.enums.UserType;
 import com.pki.service.Impl.UserService;
+import com.pki.utils.ZStringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,14 +20,16 @@ public class UserController extends BaseController {
     private UserService userService;
 
 
-    //注册
+    @RequestMapping("register")
     public String register(HttpServletRequest request, User user) {
-        if (user == null && user.getUName() == null && user.getUType() == null) {
+        if (user == null || user.getUName() == null && user.getUType() == null) {
             return "register";
         } else {
-
-
+            //重复注册
             User logUser = userService.login(user.getUName(), user.getUPsd());
+            if (logUser != null) {
+                return "register";
+            }
             if (user.getUType().equals(UserType.valueOf(1).getDiscribe())) {
                 setconcurrentUser(user, request);
                 return "login";
@@ -34,28 +37,27 @@ public class UserController extends BaseController {
                 setconcurrentUser(user, request);
                 return "login";
             }
-
         }
     }
 
     //登陆
 
-    public String login(HttpServletRequest request, String UName, String UPsd) {
-        if (UName == null && UPsd == null) {
+    @RequestMapping("login")
+    public String login(HttpServletRequest request, String uName, String uPsd) {
+        if (ZStringUtil.isEmptyStr(uName) && ZStringUtil.isEmptyStr(uPsd)) {
             return "login";
-        } else {
-            User loginuser = userService.login(UName, UPsd);
-            if (null == loginuser) {
-                return "login";
-            }
-
-            if (loginuser.getUType().equals(UserType.valueOf(1).getDiscribe())) {
-                setconcurrentUser(loginuser, request);
-                return "success";
-            }
-            setconcurrentUser(loginuser, request);
-            return "admin";
         }
+        User user = userService.login(uName, uPsd);
+        if (user == null) {
+            return "login";
+        }
+        if (user.getUType().equals(UserType.PTUSER.getDiscribe())) {
+            setconcurrentUser(user, request);
+            return "success";
+        }
+        setconcurrentUser(user, request);
+        return "admin";
+
     }
 
 }
