@@ -5,11 +5,11 @@
          version="4.0">
         <display-name>sj</display-name>
         <welcome-file-list>
-            <welcome-file>/web/jsp/login.jsp</welcome-file>
+            <welcome-file>/jsp/login.jsp</welcome-file>
         </welcome-file-list>
         <error-page>
             <error-code>404</error-code>
-            <location>/web/jsp/error.jsp</location>
+            <location>/jsp/error.jsp</location>
         </error-page>
         <!-- 加载所有的配置文件 -->
         <context-param>
