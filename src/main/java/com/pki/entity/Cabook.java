@@ -162,5 +162,4 @@ public class Cabook implements java.io.Serializable {
 	public void setCaStart(String caStart) {
 		this.caStart = caStart;
 	}
-
 }

@@ -6,6 +6,9 @@ import com.pki.enums.CAState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.util.Random;
+
 /**
  * @author by twjitm on 2019/3/12/10:54
  */
@@ -17,6 +20,7 @@ public class BookUtils {
      */
     public static void genkey(Cabook cabook) {
         String keytool = PropertiesUtils.getKeytool();
+        //window 平台
         String[] arstringCommand = new String[]{
                 "cmd ", "/k",
                 "start", // cmd Shell命令
@@ -43,7 +47,21 @@ public class BookUtils {
                 "-v"// -v 显示密钥库中的证书详细信息
         };
 
-        execCommand(arstringCommand);
+        String[] params = new String[]{
+                cabook.getCaUrl(),
+                cabook.getCaKeypass(),
+                cabook.getCaStart(),
+
+        };
+        //linux 平台
+        String doname= cabook.getCaCn() + " " + cabook.getCaOu() + " " + cabook.getCaO() + " " + cabook.getCaL() + "  "
+                + cabook.getCaSt() + " " + cabook.getCaC() ;
+        try {
+            Runtime.getRuntime().exec("sh /Users/toufumie/twjitm/pki-new/dev/general.sh "+ cabook.getCaUrl()
+                    +" "+cabook.getCaKeypass()+" "+cabook.getCaStorepass()+" "+doname);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -67,8 +85,10 @@ public class BookUtils {
                 "-storepass",// 指定密钥库的密码
                 "123456"
         };
-        execCommand(arstringCommand);
-        cabook.setCaStart(CAState.PASS.getDiscribe());
+
+       // execCommand(arstringCommand);
+
+        cabook.setCaStart(CAState.PASS.getStatCode()+"");
         cabook.setCaUrl(url);
 
 
@@ -82,9 +102,26 @@ public class BookUtils {
             Runtime.getRuntime().exec(arstringCommand);
 
         } catch (Exception e) {
-            logger.debug(e.getMessage());
+            System.err.println(e);
         }
     }
 
+    public static void main(String[] args) {
+        Cabook b = new Cabook();
+        b.setCaStart("1");
+        b.setCaSt("11");
+        b.setCaUrl("/data/books/"+new Random().nextInt(1111)+".keystore");
+        b.setCaC("1");
+        b.setCaCn("1");
+        b.setCaStorepass("123456");
+        b.setCaO("1");
+        b.setCaOu("1");
+        b.setCaL("1");
+        b.setCaO("1");
+        b.setCaKeypass("123456");
+        b.setUId(111);
+        genkey(b);
+
+    }
 
 }

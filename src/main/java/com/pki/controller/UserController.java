@@ -19,6 +19,15 @@ public class UserController extends BaseController {
     @Autowired
     private UserService userService;
 
+    @RequestMapping("welcome")
+    public String welcome(HttpServletRequest request) {
+        return "index/welcome";
+    }
+
+    @RequestMapping("index")
+    public String index(HttpServletRequest request) {
+        return "index/index";
+    }
 
     @RequestMapping("register")
     public String register(HttpServletRequest request, User user) {

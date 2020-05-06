@@ -1,6 +1,7 @@
 package com.pki.controller;
 
 import com.pki.entity.Cabook;
+import com.pki.entity.RestfulVo;
 import com.pki.entity.User;
 import com.pki.enums.CAState;
 import com.pki.service.Impl.CABookService;
@@ -12,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -42,10 +44,16 @@ public class BookSController extends BaseController {
     @Autowired
     private UserService userService;
 
+    @RequestMapping("addUI")
+    public String addUI(HttpServletRequest request) {
+        return "books/add";
+    }
+
 
     //-------该写证书的啦
     //普通用户申请证书
     @RequestMapping("apply")
+    @ResponseBody
     public String apply(HttpServletRequest request, Cabook cabook) {
         User user = getconcurrentUser(request);
         if (null == user) {
@@ -58,43 +66,43 @@ public class BookSController extends BaseController {
             String bookPath = PropertiesUtils.getBookPath();
             String caUrl = bookPath + user.getUName() + url + ".keystore";
             cabook.setCaUrl(caUrl);
+            cabook.setUId(user.getUId());
+            cabook.setCaStart(CAState.PASS.getDiscribe());
             cABookService.Save(cabook);
             BookUtils.genkey(cabook);
             return "success";
         }
     }
 
-    //普通用户默认查询
-    @RequestMapping("selectdef")
-    public String selectdef(HttpServletRequest request) {
-        User user = getconcurrentUser(request);
-        List<Cabook> list = cABookService.getBooKById(user.getUId());
-        request.setAttribute("list", list);
-        return "select";
-    }
-
-    private String caselecttype;
 
     //普通用户按状态查询
     @RequestMapping("select")
-    public String select(HttpServletRequest request) {
+    public String select(HttpServletRequest request, String type) {
         User user = getconcurrentUser(request);
-        List<Cabook> list = cABookService.getBookByUId(user.getUId(), caselecttype);
-        request.setAttribute("list", list);
-        return "select";
+
+        List<Cabook> list = cABookService.getBookByUId(user.getUId(), type);
+        request.setAttribute("books", list);
+        if (Integer.parseInt(type) != CAState.PASS.getStatCode()) {
+            return "books/applys";
+        }
+        return "books/books";
     }
 
 
     //管理员条件查询证书
-    @RequestMapping("adminquery")
-    public List<Cabook> adminquery(HttpServletRequest request, String adcaState) {
+    @RequestMapping("adminSelect")
+    public String adminquery(HttpServletRequest request, Integer type) {
         User user = getconcurrentUser(request);
         List<Cabook> list = new ArrayList<>();
         if (null == user) {
         } else {
-            list = cABookService.getBookByStart(adcaState);
+            list = cABookService.getBookByStart(type + "");
         }
-        return list;
+        request.setAttribute("books", list);
+        if (type != CAState.PASS.getStatCode()) {
+            return "books/admin_applys";
+        }
+        return "books/admin_books";
     }
 
     //管理员默认查询所有证书
@@ -126,18 +134,28 @@ public class BookSController extends BaseController {
     private Integer caBookId;
 
     //管理员签发证书
-    @RequestMapping("adminsetCAbook")
-    public String adminsetCAbook(HttpServletRequest request, Integer caBookId) {
+    @RequestMapping("review")
+    @ResponseBody
+    public RestfulVo review(HttpServletRequest request, Integer caBookId, Integer type) {
         User user = getconcurrentUser(request);
+        RestfulVo restfulVo = new RestfulVo();
+
         if (null == user) {
-            return "login";
+            restfulVo.setCode(500);
+            return restfulVo;
         } else {
 
             Cabook cabook = cABookService.getCaBookById(caBookId);
-            System.out.println("------------>>" + cabook.getCaCn());
-            BookUtils.export(cabook, user);
+            if (CAState.valueOf(type) == CAState.PASS) {
+                System.out.println("------------>>" + cabook.getCaCn());
+                BookUtils.export(cabook, user);
+            } else {
+                cabook.setCaStart(type + "");
+            }
+
             cABookService.updata(cabook);
-            return "getbookcar";
+            restfulVo.setCode(200);
+            return restfulVo;
         }
     }
 

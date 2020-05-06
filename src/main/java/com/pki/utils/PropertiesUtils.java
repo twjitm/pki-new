@@ -16,6 +16,9 @@ public class PropertiesUtils {
     private static int osType = 0;
     private static String libraryPsd;
 
+    public PropertiesUtils() {
+        init();
+    }
     public void init() {
         Properties properties = new Properties();
         try {

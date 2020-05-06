@@ -1,0 +1,1 @@
+keytool -genkeypair -keystore /data/books/822.keystore -keypass 123456 -storepass 123456 -keyalg RSA -keysize 2048 -validity 3650 -dname "CN=1,OU=1,O=1,L=1,ST=11,C=1"

@@ -62,6 +62,7 @@ public class BaseController {
             user = new User();
             user.setUId(0);
             user.setUAccount("default");
+            user.setUName("default");
         }
         return user;
     }
