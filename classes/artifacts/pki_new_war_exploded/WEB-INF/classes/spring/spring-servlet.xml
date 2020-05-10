@@ -31,6 +31,7 @@
     <mvc:resources location="/css/" mapping="/css/**" />
     <mvc:resources location="/img/" mapping="/img/**" />
     <mvc:resources mapping="/lib/**" location="/lib/" />
+    <mvc:resources mapping="/fonts/**" location="/fonts/" />
     <mvc:resources mapping="/static/**" location="/static/" />
     <!-- 上传文件的管理 -->
     <!-- 	<mvc:resources location="/upfile/" mapping="/upfile/**" />

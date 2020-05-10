@@ -36,6 +36,11 @@ public class UserController extends BaseController {
         return "register";
     }
 
+    @RequestMapping("loginUI")
+    public String loginUI(){
+        return "login";
+    }
+
     @RequestMapping("register")
     public String register(HttpServletRequest request, User user) {
         if (user == null || user.getUName() == null && user.getUType() == null) {

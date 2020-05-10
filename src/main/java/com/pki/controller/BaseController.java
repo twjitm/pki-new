@@ -77,6 +77,7 @@ public class BaseController {
         System.out.println("当前session=id" + request.getSession().getId());
         session.getServletContext().setAttribute(request.getSession().getId(), user);
         linePerson.put(request.getSession().getId(), user);
+        request.getSession().setAttribute(request.getSession().getId(),user);
     }
 
     /**
