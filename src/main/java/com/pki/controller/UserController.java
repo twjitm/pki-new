@@ -1,5 +1,6 @@
 package com.pki.controller;
 
+import com.pki.entity.RestfulVo;
 import com.pki.entity.User;
 import com.pki.enums.UserType;
 import com.pki.service.Impl.UserService;
@@ -7,6 +8,7 @@ import com.pki.utils.ZStringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -27,6 +29,11 @@ public class UserController extends BaseController {
     @RequestMapping("index")
     public String index(HttpServletRequest request) {
         return "index/index";
+    }
+
+    @RequestMapping("registerGo")
+    public String goRegister(HttpServletRequest request) {
+        return "register";
     }
 
     @RequestMapping("register")
@@ -52,20 +59,24 @@ public class UserController extends BaseController {
     //登陆
 
     @RequestMapping("login")
-    public String login(HttpServletRequest request, String uName, String uPsd) {
+    @ResponseBody
+    public RestfulVo login(HttpServletRequest request, String uName, String uPsd) {
+        RestfulVo restfulVo = new RestfulVo();
+
         if (ZStringUtil.isEmptyStr(uName) && ZStringUtil.isEmptyStr(uPsd)) {
-            return "login";
+            restfulVo.setCode(200);
+            restfulVo.setSuccessful(false);
+            return restfulVo;
         }
         User user = userService.login(uName, uPsd);
         if (user == null) {
-            return "login";
+            restfulVo.setCode(200);
+            restfulVo.setSuccessful(false);
+            return restfulVo;
         }
-        if (user.getUType().equals(UserType.PTUSER.getDiscribe())) {
-            setconcurrentUser(user, request);
-            return "success";
-        }
+        restfulVo.setSuccessful(true);
         setconcurrentUser(user, request);
-        return "admin";
+        return restfulVo;
 
     }
 
