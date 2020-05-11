@@ -50,15 +50,15 @@ public class BookUtils {
         String[] params = new String[]{
                 cabook.getCaUrl(),
                 cabook.getCaKeypass(),
-                cabook.getCaStart(),
+                cabook.getCaStart() + "",
 
         };
         //linux 平台
-        String doname= cabook.getCaCn() + " " + cabook.getCaOu() + " " + cabook.getCaO() + " " + cabook.getCaL() + "  "
-                + cabook.getCaSt() + " " + cabook.getCaC() ;
+        String doname = cabook.getCaCn() + " " + cabook.getCaOu() + " " + cabook.getCaO() + " " + cabook.getCaL() + "  "
+                + cabook.getCaSt() + " " + cabook.getCaC();
         try {
-            Runtime.getRuntime().exec("sh /Users/toufumie/twjitm/pki-new/dev/general.sh "+ cabook.getCaUrl()
-                    +" "+cabook.getCaKeypass()+" "+cabook.getCaStorepass()+" "+doname);
+            Runtime.getRuntime().exec("sh " + keytool + "general.sh " + cabook.getCaUrl()
+                    + " " + cabook.getCaKeypass() + " " + cabook.getCaStorepass() + " " + doname);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -70,6 +70,7 @@ public class BookUtils {
     public static void export(Cabook cabook, User user) {
         String keytool = PropertiesUtils.getKeytool();
         String url = PropertiesUtils.getBookPath() + user.getUName() + cabook.getCaId() + ".cer";
+        //windows 平台
         String[] arstringCommand = new String[]{
 
                 "cmd ", "/k",
@@ -86,12 +87,17 @@ public class BookUtils {
                 "123456"
         };
 
-       // execCommand(arstringCommand);
+        // execCommand(arstringCommand);
 
-        cabook.setCaStart(CAState.PASS.getStatCode()+"");
+        //linux 平台
+        try {
+            Runtime.getRuntime().exec("sh " + keytool + "export.sh" + cabook.getCaUrl()
+                    + " " + cabook.getCaStorepass() + " " + url);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        cabook.setCaStart(CAState.PASS.getStatCode());
         cabook.setCaUrl(url);
-
-
     }
 
     private static void execCommand(String[] arstringCommand) {
@@ -108,9 +114,9 @@ public class BookUtils {
 
     public static void main(String[] args) {
         Cabook b = new Cabook();
-        b.setCaStart("1");
+        b.setCaStart(1);
         b.setCaSt("11");
-        b.setCaUrl("/data/books/"+new Random().nextInt(1111)+".keystore");
+        b.setCaUrl("/data/books/" + new Random().nextInt(1111) + ".keystore");
         b.setCaC("1");
         b.setCaCn("1");
         b.setCaStorepass("123456");

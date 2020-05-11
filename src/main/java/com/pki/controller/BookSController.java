@@ -67,7 +67,7 @@ public class BookSController extends BaseController {
             String caUrl = bookPath + user.getUName() + url + ".keystore";
             cabook.setCaUrl(caUrl);
             cabook.setUId(user.getUId());
-            cabook.setCaStart(CAState.PASS.getDiscribe());
+            cabook.setCaStart(CAState.PASS.getStatCode());
             cABookService.Save(cabook);
             BookUtils.genkey(cabook);
             return "success";
@@ -131,7 +131,6 @@ public class BookSController extends BaseController {
         }
     }
 
-    private Integer caBookId;
 
     //管理员签发证书
     @RequestMapping("review")
@@ -150,7 +149,7 @@ public class BookSController extends BaseController {
                 System.out.println("------------>>" + cabook.getCaCn());
                 BookUtils.export(cabook, user);
             } else {
-                cabook.setCaStart(type + "");
+                cabook.setCaStart(type);
             }
 
             cABookService.updata(cabook);
@@ -161,7 +160,7 @@ public class BookSController extends BaseController {
 
     //管理员删除证书
     @RequestMapping("deleteca")
-    public String deleteca() {
+    public String deleteca(HttpServletRequest request,Integer caBookId) {
         Cabook cabook = cABookService.getCaBookById(caBookId);
         java.io.File file = new java.io.File(cabook.getCaUrl());
         cABookService.delete(cabook);

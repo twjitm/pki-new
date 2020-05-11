@@ -37,7 +37,7 @@ public class UserController extends BaseController {
     }
 
     @RequestMapping("loginUI")
-    public String loginUI(){
+    public String loginUI() {
         return "login";
     }
 
@@ -85,4 +85,10 @@ public class UserController extends BaseController {
 
     }
 
+    @RequestMapping("logout")
+    public String logOut(HttpServletRequest request) {
+        request.getSession().removeAttribute(request.getSession().getId());
+        removeconcurrentUser(request);
+        return "login";
+    }
 }

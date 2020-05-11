@@ -22,7 +22,7 @@ public class Cabook implements java.io.Serializable {
 	private String caKeypass;
 	private String caUrl;
 	private Integer UId;
-	private String caStart;
+	private Integer caStart;
 
 	// Constructors
 
@@ -38,7 +38,7 @@ public class Cabook implements java.io.Serializable {
 	/** full constructor */
 	public Cabook(String caCn, String caOu, String caO, String caL,
                   String caSt, String caC, String caStorepass, String caKeypass,
-                  String caUrl, Integer UId, String caStart) {
+                  String caUrl, Integer UId, Integer caStart) {
 		this.caCn = caCn;
 		this.caOu = caOu;
 		this.caO = caO;
@@ -155,11 +155,11 @@ public class Cabook implements java.io.Serializable {
 	}
 
 	@Column(name = "ca_start")
-	public String getCaStart() {
+	public Integer getCaStart() {
 		return this.caStart;
 	}
 
-	public void setCaStart(String caStart) {
+	public void setCaStart(Integer caStart) {
 		this.caStart = caStart;
 	}
 }

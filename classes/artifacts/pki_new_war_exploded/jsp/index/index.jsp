@@ -45,8 +45,8 @@
                         <a href="#" class="dropDown_A">admin <i class="Hui-iconfont">&#xe6d5;</i></a>
                         <ul class="dropDown-menu menu radius box-shadow">
                             <li><a href="javascript:;" onClick="myselfinfo()">个人信息</a></li>
-                            <li><a href="#">切换账户</a></li>
-                            <li><a href="#">退出</a></li>
+                            <li><a href="<%=path%>/users/logout.do">切换账户</a></li>
+                            <li><a href="<%=path%>/users/logout.do">退出</a></li>
                         </ul>
                     </li>
                     <li id="Hui-msg"><a href="#" title="消息"><span class="badge badge-danger">1</span><i
@@ -73,18 +73,21 @@
         <dl id="menu-article">
             <dt><i class="Hui-iconfont">&#xe616;</i>证书管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
             <dd>
-                <ul>
-                    <li><a data-href="<%= path%>/books/addUI.do" data-title="申请新证书" href="javascript:void(0)">申请新证书</a>
-                    </li>
-                    <li><a data-href="<%= path%>/books/select.do?type=0" data-title="我的申请列表" href="javascript:void(0)">我的申请列表</a>
-                    </li>
-                    <li><a data-href="<%= path%>/books/select.do?type=1" data-title="我的证书列表" href="javascript:void(0)">我的证书列表</a>
-                    </li>
-                    <!--管理员权限-->
-                    <li><a data-href="<%= path%>/books/adminSelect.do?type=0" data-title="证书申请列表" href="javascript:void(0)">证书申请列表</a>
-                    </li>
-                    <li><a data-href="<%= path%>/books/adminSelect.do?type=1" data-title="全部证书列表" href="javascript:void(0)">全部证书列表</a>
-                    </li>
+                <ul id="booksMenus">
+<%--                    <li><a data-href="<%= path%>/books/addUI.do" data-title="申请新证书" href="javascript:void(0)">申请新证书</a>--%>
+<%--                    </li>--%>
+
+<%--                    <li><a data-href="<%= path%>/books/select.do?type=0" data-title="我的申请列表" href="javascript:void(0)">我的申请列表</a>--%>
+<%--                    </li>--%>
+<%--                    <li><a data-href="<%= path%>/books/select.do?type=1" data-title="我的证书列表" href="javascript:void(0)">我的证书列表</a>--%>
+<%--                    </li>--%>
+<%--                    <!--管理员权限-->--%>
+<%--                    <li><a data-href="<%= path%>/books/adminSelect.do?type=0" data-title="证书申请列表"--%>
+<%--                           href="javascript:void(0)">证书申请列表</a>--%>
+<%--                    </li>--%>
+<%--                    <li><a data-href="<%= path%>/books/adminSelect.do?type=1" data-title="全部证书列表"--%>
+<%--                           href="javascript:void(0)">全部证书列表</a>--%>
+<%--                    </li>--%>
 
                 </ul>
             </dd>
@@ -140,20 +143,37 @@
 <script type="text/javascript" src="<%=path %>/lib/jquery.contextmenu/jquery.contextmenu.r2.js"></script>
 <script type="text/javascript">
     $(function () {
-        /*$("#min_title_list li").contextMenu('Huiadminmenu', {
-            bindings: {
-                'closethis': function(t) {
-                    console.log(t);
-                    if(t.find("i")){
-                        t.find("i").trigger("click");
-                    }
-                },
-                'closeall': function(t) {
-                    alert('Trigger was '+t.id+'\nAction was Email');
-                },
-            }
-        });*/
+        loadMenu();
     });
+
+
+    function loadMenu() {
+
+        $.ajax({
+            url: '<%=path%>/menu/menus.do',
+            type: 'POST',
+            dataType: 'json',
+            success: function (data) {
+                localStorage.setItem("menulist", data);
+                var html = "";
+                var concurrent = window.location.pathname;//当前url
+                var moudeurl = concurrent.substring(6, concurrent.length);//那个项目模块
+                var moude = moudeurl.split("/")[0];
+                console.log(moude);
+                for (var i = 0; i < data.length; i++) {
+                    //父级菜单
+                    var url = '/xyes' + data[i].menuUrl;
+                    console.log(url);
+                    html = html + ' <li><a data-href="<%= path%>' + data[i].menuUrl + '" data-title="' + data[i].menuName + '" href="javascript:void(0)">' + data[i].menuName + '</a></li>';
+                }
+                $("#booksMenus").html(html);
+            },
+            error: function (ero) {
+            },
+        });
+
+
+    }
 
     /*个人信息*/
     function myselfinfo() {

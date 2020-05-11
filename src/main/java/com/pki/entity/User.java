@@ -13,7 +13,7 @@ public class User implements java.io.Serializable {
 
 	private Integer UId;
 	private String UName;
-	private String UType;
+	private Integer UType;
 	private String UPsd;
 	private String UAccount;
 
@@ -24,7 +24,7 @@ public class User implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public User(String UName, String UType, String UPsd, String UAccount) {
+	public User(String UName, Integer UType, String UPsd, String UAccount) {
 		this.UName = UName;
 		this.UType = UType;
 		this.UPsd = UPsd;
@@ -53,11 +53,11 @@ public class User implements java.io.Serializable {
 	}
 
 	@Column(name = "u_type")
-	public String getUType() {
+	public Integer getUType() {
 		return this.UType;
 	}
 
-	public void setUType(String UType) {
+	public void setUType(Integer UType) {
 		this.UType = UType;
 	}
 
