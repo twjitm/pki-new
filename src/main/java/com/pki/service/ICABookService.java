@@ -10,11 +10,11 @@ public interface ICABookService {
 
    public void updata(Cabook book);
 
-   public List<Cabook>getBookByStart(String start);
+   public List<Cabook>getBookByStart(Integer start);
 
    public Long getBookByStartLong(int start);
 
-   public List<Cabook> getBookByUId(int Uid, String start);
+   public List<Cabook> getBookByUId(int Uid, Integer start);
    
    public Long getBookByUIdLong(int start);
    

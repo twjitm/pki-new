@@ -31,7 +31,7 @@ public class CABookService implements ICABookService {
     }
 
     @Override
-    public List<Cabook> getBookByStart(String start) {
+    public List<Cabook> getBookByStart(Integer start) {
         System.out.println("tttttttttttttttt" + start);
         String hql = "from Cabook c where c.caStart=:start order by c.caId desc";
         Map<String, Object> map = new HashMap<String, Object>();
@@ -53,7 +53,7 @@ public class CABookService implements ICABookService {
     }
 
     @Override
-    public List<Cabook> getBookByUId(int Uid, String start) {
+    public List<Cabook> getBookByUId(int Uid, Integer start) {
         System.out.println("-------------" + Uid + start);
         String hql = "from Cabook c where c.UId=" + Uid + " and c.caStart=:start";
         Map<String, Object> map = new HashMap<String, Object>();

@@ -15,7 +15,7 @@
     <base href="<%=basePath%>">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>高原农业特色子系统</title>
+    <title></title>
     <jsp:include page="../core/core.jsp"/>
 </head>
 
@@ -59,8 +59,9 @@
                     <td>${bottle.caKeypass}</td>
                     <td>${bottle.caStart}</td>
                     <td>
-                        <button class="btn btn-success radius" id="showJson" value="${bottle.caId}">查看</button>
-                        <button class="btn btn-danger radius" id="delete" value="${bottle.caId}">取消申请</button>
+                        <button class="btn btn-success radius" onclick="showJson(${bottle.caId})" value="">查看
+                        </button>
+                        <button class="btn btn-danger radius" onclick="deleteBook(${bottle.caId})">取消申请</button>
                     </td>
                 </tr>
             </c:forEach>
@@ -78,17 +79,59 @@
                 //{"orderable":false,"aTargets":[0,8,9]}// 制定列不参与排序
             ]
         });
-        $("#showJson").click(function () {
-            json = $(this).val();
-            layer.open({
-                type: 1,
-                skin: 'layui-layer-rim', //加上边框
-                area: ['800px', '600px'], //宽高
-                content: "<pre>采集数据=" + JSON.stringify(json) + "</pre>",
-            });
+    });
+
+    function showJson(Id) {
+        $.ajax({
+            type: "GET",
+            url: '<%=path%>/books/getBook.do?id=' + Id,
+            success: (function (data) {
+                layer.open({
+                    type: 1,
+                    skin: 'layui-layer-rim', //加上边框
+                    area: ['800px', '600px'], //宽高
+                    content: "<pre>证书数据=" + JSON.stringify(data, null, 2) + "</pre>",
+                });
+                console.dir(data);
+            }),
+            error: function () {
+                layer.open({
+                    title: '异常提示'
+                    , content: '系统异常，请重试',
+                });
+            }
         });
 
-    });
+
+    }
+
+    function deleteBook(Id) {
+        layer.confirm('确定取消申请吗？', {
+            btn: ['确定', '取消'] //按钮
+        }, function () {
+            $.ajax({
+                type: "GET",
+                url: '<%=path%>/books/deleteca.do?caBookId=' + Id,
+                success: (function (data) {
+                    layer.open({
+                        title: '删除成功'
+                        , content: '删除成功',
+                    });
+                    location.reload();
+                    console.dir(data);
+                }),
+                error: function () {
+                    layer.open({
+                        title: '异常提示'
+                        , content: '系统异常，请重试',
+                    });
+                }
+            });
+
+
+        }, function () {
+        });
+    }
 
 
 </script>

@@ -67,7 +67,7 @@ public class BookSController extends BaseController {
             String caUrl = bookPath + user.getUName() + url + ".keystore";
             cabook.setCaUrl(caUrl);
             cabook.setUId(user.getUId());
-            cabook.setCaStart(CAState.PASS.getStatCode());
+            cabook.setCaStart(CAState.UNDER.getStatCode());
             cABookService.Save(cabook);
             BookUtils.genkey(cabook);
             return "success";
@@ -77,15 +77,23 @@ public class BookSController extends BaseController {
 
     //普通用户按状态查询
     @RequestMapping("select")
-    public String select(HttpServletRequest request, String type) {
+    public String select(HttpServletRequest request, Integer type) {
         User user = getconcurrentUser(request);
 
         List<Cabook> list = cABookService.getBookByUId(user.getUId(), type);
         request.setAttribute("books", list);
-        if (Integer.parseInt(type) != CAState.PASS.getStatCode()) {
+        if (type != CAState.PASS.getStatCode()) {
             return "books/applys";
         }
         return "books/books";
+    }
+
+
+    @RequestMapping("getBook")
+    @ResponseBody
+    public Cabook getBook(HttpServletRequest request, Integer id) {
+        Cabook book = cABookService.getCaBookById(id);
+        return book;
     }
 
 
@@ -96,7 +104,7 @@ public class BookSController extends BaseController {
         List<Cabook> list = new ArrayList<>();
         if (null == user) {
         } else {
-            list = cABookService.getBookByStart(type + "");
+            list = cABookService.getBookByStart(type);
         }
         request.setAttribute("books", list);
         if (type != CAState.PASS.getStatCode()) {
@@ -160,7 +168,8 @@ public class BookSController extends BaseController {
 
     //管理员删除证书
     @RequestMapping("deleteca")
-    public String deleteca(HttpServletRequest request,Integer caBookId) {
+    @ResponseBody
+    public String deleteca(HttpServletRequest request, Integer caBookId) {
         Cabook cabook = cABookService.getCaBookById(caBookId);
         java.io.File file = new java.io.File(cabook.getCaUrl());
         cABookService.delete(cabook);
