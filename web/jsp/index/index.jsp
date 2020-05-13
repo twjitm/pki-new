@@ -74,21 +74,6 @@
             <dt><i class="Hui-iconfont">&#xe616;</i>证书管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
             <dd>
                 <ul id="booksMenus">
-<%--                    <li><a data-href="<%= path%>/books/addUI.do" data-title="申请新证书" href="javascript:void(0)">申请新证书</a>--%>
-<%--                    </li>--%>
-
-<%--                    <li><a data-href="<%= path%>/books/select.do?type=0" data-title="我的申请列表" href="javascript:void(0)">我的申请列表</a>--%>
-<%--                    </li>--%>
-<%--                    <li><a data-href="<%= path%>/books/select.do?type=1" data-title="我的证书列表" href="javascript:void(0)">我的证书列表</a>--%>
-<%--                    </li>--%>
-<%--                    <!--管理员权限-->--%>
-<%--                    <li><a data-href="<%= path%>/books/adminSelect.do?type=0" data-title="证书申请列表"--%>
-<%--                           href="javascript:void(0)">证书申请列表</a>--%>
-<%--                    </li>--%>
-<%--                    <li><a data-href="<%= path%>/books/adminSelect.do?type=1" data-title="全部证书列表"--%>
-<%--                           href="javascript:void(0)">全部证书列表</a>--%>
-<%--                    </li>--%>
-
                 </ul>
             </dd>
         </dl>
