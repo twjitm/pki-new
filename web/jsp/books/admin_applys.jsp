@@ -15,14 +15,15 @@
     <base href="<%=basePath%>">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>高原农业特色子系统</title>
+    <title>校园 PKI 证书管理系统</title>
     <jsp:include page="../core/core.jsp"/>
 </head>
 
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 证书管理 <span
-        class="c-gray en">&gt;</span>申请列表（管理员）<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px"
-                                            href="javascript:location.replace(location.href);" title="刷新"><i
+        class="c-gray en">&gt;</span>申请列表（管理员）<a class="btn btn-success radius r"
+                                                 style="line-height:1.6em;margin-top:3px"
+                                                 href="javascript:location.replace(location.href);" title="刷新"><i
         class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
     <div class="cl pd-5 bg-1 bk-gray mt-20">
@@ -59,8 +60,12 @@
                     <td>${bottle.caKeypass}</td>
                     <td>${bottle.caStart}</td>
                     <td>
-                        <button class="btn btn-success radius" id="showJson" value="${bottle.caId}">查看</button>
-                        <button class="btn btn-danger radius" id="reviewBooks" onclick="reviewBooks(${bottle.caId})" value="${bottle.caId}">审核证书</button>
+                        <button class="btn btn-success radius" onclick="showJson(${bottle.caId})"
+                                value="${bottle.caId}">查看
+                        </button>
+                        <button class="btn btn-danger radius" onclick="reviewBooks(${bottle.caId})"
+                                value="${bottle.caId}">审核证书
+                        </button>
                     </td>
                 </tr>
             </c:forEach>
@@ -69,6 +74,7 @@
     </div>
 </div>
 <script type="text/javascript">
+
     $(function () {
         $('.table-sort').dataTable({
             "aaSorting": [[1, "desc"]],//默认第几个排序
@@ -89,48 +95,6 @@
         });
 
     });
-
-    function reviewBooks(bookId) {
-
-        //询问框
-        layer.confirm('审核证书中，确定需要通过吗？', {
-            btn: ['拒绝申请', '通过申请'] //按钮
-        }, function () {
-            send(bookId,0);
-        }, function () {
-            send(bookId,1);
-        });
-    }
-
-    function send(bookId,pass) {
-
-        $.ajax({
-            type: "POST",
-            url: '<%=path%>/books/review.do?caBookId='+bookId+'&type='+pass,
-            success: (function (data) {
-                if (data.successful === false) {
-                    layer.open({
-                        title: '异常提示'
-                        , content: data.message,
-                    });
-                } else {
-                    layer.open({
-                        title: '成功提示'
-                        , content: data.message,
-                    });
-                    location.replace(location.href);
-                }
-                console.dir(data);
-            }),
-            error: function () {
-                layer.open({
-                    title: '异常提示'
-                    , content: '系统异常，请重试',
-                });
-            }
-        });
-    }
-
 
 </script>
 

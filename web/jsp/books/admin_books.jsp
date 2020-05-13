@@ -15,7 +15,7 @@
     <base href="<%=basePath%>">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>高原农业特色子系统</title>
+    <title>校园 PKI 证书管理系统</title>
     <jsp:include page="../core/core.jsp"/>
 </head>
 
@@ -59,8 +59,8 @@
                     <td>${bottle.caKeypass}</td>
                     <td>${bottle.caStart}</td>
                     <td>
-                        <button class="btn btn-success radius" id="showJson" value="${bottle.caId}">查看</button>
-                        <button class="btn btn-danger radius" id="delete" value="${bottle.caId}">删除</button>
+                        <button class="btn btn-success radius" onclick="showJson(${bottle.caId})"  value="${bottle.caId}">查看</button>
+                        <button class="btn btn-danger radius" onclick="deleteBook(${bottle.caId})" value="${bottle.caId}">删除</button>
                     </td>
                 </tr>
             </c:forEach>
@@ -78,19 +78,7 @@
                 //{"orderable":false,"aTargets":[0,8,9]}// 制定列不参与排序
             ]
         });
-        $("#showJson").click(function () {
-            json = $(this).val();
-            layer.open({
-                type: 1,
-                skin: 'layui-layer-rim', //加上边框
-                area: ['800px', '600px'], //宽高
-                content: "<pre>采集数据=" + JSON.stringify(json) + "</pre>",
-            });
-        });
-
     });
-
-
 </script>
 
 </body>

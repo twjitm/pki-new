@@ -8,7 +8,7 @@ import java.util.List;
 public interface ICABookService {
    public void Save(Cabook book);
 
-   public void updata(Cabook book);
+   public void update(Cabook book);
 
    public List<Cabook>getBookByStart(Integer start);
 

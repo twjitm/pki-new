@@ -21,6 +21,7 @@ public interface IBaseDao<T> {
 	 * @param hql
 	 */
 	public void update(String hql);
+	public void update(String hql,Map<String,Object> params);
 	/**
 	 * 通过hql删除数据
 	 * @param hql

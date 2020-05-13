@@ -4,11 +4,11 @@ public enum UserType {
 	/**
 	 * 没审核
 	 */
-	PTUSER(1,"普通用户"),
+	PTUSER(2,"普通用户"),
 	/**
 	 * 签发
 	 */
-	ADMIN(2,"管理员");
+	ADMIN(1,"管理员");
 	
 	private int statCode;
 	private String discribe;

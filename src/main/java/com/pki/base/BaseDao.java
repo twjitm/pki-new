@@ -87,6 +87,16 @@ public class BaseDao<T> implements IBaseDao<T> {
 		Query query = this.getCurrentSession().createQuery(hql);
 		query.executeUpdate();
 	}
+	@Override
+	public void update(String hql,Map<String,Object> params) {
+		Query query = this.getCurrentSession().createQuery(hql);
+		if (params != null && !params.isEmpty()) {
+			for (String key : params.keySet()) {
+				query.setParameter(key, params.get(key));
+			}
+		}
+		query.executeUpdate();
+	}
 
 	@Override
 	public void saveOrUpdate(T t) {

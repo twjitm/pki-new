@@ -81,59 +81,6 @@
         });
     });
 
-    function showJson(Id) {
-        $.ajax({
-            type: "GET",
-            url: '<%=path%>/books/getBook.do?id=' + Id,
-            success: (function (data) {
-                layer.open({
-                    type: 1,
-                    skin: 'layui-layer-rim', //加上边框
-                    area: ['800px', '600px'], //宽高
-                    content: "<pre>证书数据=" + JSON.stringify(data, null, 2) + "</pre>",
-                });
-                console.dir(data);
-            }),
-            error: function () {
-                layer.open({
-                    title: '异常提示'
-                    , content: '系统异常，请重试',
-                });
-            }
-        });
-
-
-    }
-
-    function deleteBook(Id) {
-        layer.confirm('确定取消申请吗？', {
-            btn: ['确定', '取消'] //按钮
-        }, function () {
-            $.ajax({
-                type: "GET",
-                url: '<%=path%>/books/deleteca.do?caBookId=' + Id,
-                success: (function (data) {
-                    layer.open({
-                        title: '删除成功'
-                        , content: '删除成功',
-                    });
-                    location.reload();
-                    console.dir(data);
-                }),
-                error: function () {
-                    layer.open({
-                        title: '异常提示'
-                        , content: '系统异常，请重试',
-                    });
-                }
-            });
-
-
-        }, function () {
-        });
-    }
-
-
 </script>
 
 </body>

@@ -1,14 +1,15 @@
 package com.pki.enums;
 
 public enum CAState {
-    UNDER(0, "未审核"),
     /**
      * 没审核
      */
-    PASS(1, "通过"),
+    UNDER(0, "未审核"),
     /**
      * 签发
      */
+    PASS(1, "通过"),
+
     NOPASS(2, "未通过");
 
     private int statCode;

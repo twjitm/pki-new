@@ -15,7 +15,7 @@
     <base href="<%=basePath%>">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>高原农业特色子系统</title>
+    <title>校园 PKI 证书管理系统</title>
     <jsp:include page="../core/core.jsp"/>
 </head>
 
@@ -59,9 +59,11 @@
                     <td>${bottle.caKeypass}</td>
                     <td>${bottle.caStart}</td>
                     <td>
-                        <button class="btn btn-primary radius" id="downBooks" value="${bottle.caId}">下载</button>
-                        <button class="btn btn-success radius" id="showJson" value="${bottle.caId}">查看</button>
-                        <button class="btn btn-danger radius" id="delete" value="${bottle.caId}">删除</button>
+                        <c:if test="${bottle.caStart==1}">
+                            <button class="btn btn-primary radius" value="${bottle.caId}"><a href="<%=path %>/books/getDownloadFile.do?downCaBookId=${bottle.caId}">下载</a></button>
+                        </c:if>
+                        <button class="btn btn-success radius" onclick="showJson(${bottle.caId})" value="${bottle.caId}">查看</button>
+                        <button class="btn btn-danger radius"  onclick="deleteBook(${bottle.caId})" value="${bottle.caId}">删除</button>
                     </td>
                 </tr>
             </c:forEach>
@@ -90,8 +92,6 @@
         });
 
     });
-
-
 </script>
 
 </body>

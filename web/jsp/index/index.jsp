@@ -96,7 +96,7 @@
             <dt><i class="Hui-iconfont">&#xe613;</i> 个人管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
             <dd>
                 <ul>
-                    <li><a data-href="<%=path%>/data/sensors.do" data-title="传感器列表" href="javascript:void(0)">个人信息管理</a>
+                    <li><a data-href="<%=path%>/users/user.do" data-title="个人信息管理" href="javascript:void(0)">个人信息管理</a>
                     </li>
                 </ul>
             </dd>

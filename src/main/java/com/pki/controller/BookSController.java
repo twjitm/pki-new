@@ -4,6 +4,7 @@ import com.pki.entity.Cabook;
 import com.pki.entity.RestfulVo;
 import com.pki.entity.User;
 import com.pki.enums.CAState;
+import com.pki.enums.UserType;
 import com.pki.service.Impl.CABookService;
 import com.pki.service.Impl.UserService;
 import com.pki.utils.BookUtils;
@@ -62,7 +63,7 @@ public class BookSController extends BaseController {
         } else {
             Date d = new Date();
             SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
-            String url = f.format(d);
+            String url = f.format(d) + new Date().getTime();
             String bookPath = PropertiesUtils.getBookPath();
             String caUrl = bookPath + user.getUName() + url + ".keystore";
             cabook.setCaUrl(caUrl);
@@ -149,21 +150,31 @@ public class BookSController extends BaseController {
 
         if (null == user) {
             restfulVo.setCode(500);
-            return restfulVo;
-        } else {
-
-            Cabook cabook = cABookService.getCaBookById(caBookId);
-            if (CAState.valueOf(type) == CAState.PASS) {
-                System.out.println("------------>>" + cabook.getCaCn());
-                BookUtils.export(cabook, user);
-            } else {
-                cabook.setCaStart(type);
-            }
-
-            cABookService.updata(cabook);
-            restfulVo.setCode(200);
+            restfulVo.setSuccessful(false);
+            restfulVo.setMessage("操作失败");
             return restfulVo;
         }
+
+        if (user.getUType() != UserType.ADMIN.getStatCode()) {
+            restfulVo.setCode(500);
+            restfulVo.setSuccessful(false);
+            restfulVo.setMessage("无权限！");
+            return restfulVo;
+        }
+        Cabook cabook = cABookService.getCaBookById(caBookId);
+        Integer bookUId = cabook.getUId();
+        User bookUser = userService.getUserById(bookUId);
+        if (CAState.valueOf(type) == CAState.PASS) {
+            BookUtils.export(cabook, bookUser);
+        } else {
+            cabook.setCaStart(type);
+        }
+        cABookService.update(cabook);
+        restfulVo.setCode(200);
+        restfulVo.setSuccessful(true);
+        restfulVo.setMessage("操作成功");
+        return restfulVo;
+
     }
 
     //管理员删除证书

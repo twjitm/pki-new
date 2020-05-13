@@ -69,7 +69,7 @@ public class BookUtils {
      */
     public static void export(Cabook cabook, User user) {
         String keytool = PropertiesUtils.getKeytool();
-        String url = PropertiesUtils.getBookPath() + user.getUName() + cabook.getCaId() + ".cer";
+        String url = PropertiesUtils.getBookPath() + user.getUName() +"_"+ cabook.getCaId() + ".cer";
         //windows 平台
         String[] arstringCommand = new String[]{
 
@@ -91,7 +91,7 @@ public class BookUtils {
 
         //linux 平台
         try {
-            Runtime.getRuntime().exec("sh " + keytool + "export.sh" + cabook.getCaUrl()
+            Runtime.getRuntime().exec("sh " + keytool + "export.sh " + cabook.getCaUrl()
                     + " " + cabook.getCaStorepass() + " " + url);
         } catch (IOException e) {
             e.printStackTrace();
@@ -113,20 +113,28 @@ public class BookUtils {
     }
 
     public static void main(String[] args) {
-        Cabook b = new Cabook();
-        b.setCaStart(1);
-        b.setCaSt("11");
-        b.setCaUrl("/data/books/" + new Random().nextInt(1111) + ".keystore");
-        b.setCaC("1");
-        b.setCaCn("1");
-        b.setCaStorepass("123456");
-        b.setCaO("1");
-        b.setCaOu("1");
-        b.setCaL("1");
-        b.setCaO("1");
-        b.setCaKeypass("123456");
-        b.setUId(111);
-        genkey(b);
+//        Cabook b = new Cabook();
+//        b.setCaStart(1);
+//        b.setCaSt("11");
+//        b.setCaUrl("/data/books/" + new Random().nextInt(1111) + ".keystore");
+//        b.setCaC("1");
+//        b.setCaCn("1");
+//        b.setCaStorepass("123456");
+//        b.setCaO("1");
+//        b.setCaOu("1");
+//        b.setCaL("1");
+//        b.setCaO("1");
+//        b.setCaKeypass("123456");
+//        b.setUId(111);
+//        genkey(b);
+
+
+        try {
+            Runtime.getRuntime().exec("sh "  + "/data/books/dev/export.sh" + " /data/books/lqn2020-05-13.keystore"
+                    + " " +"123456" + " " + "/data/books/lqn2020-05-13.cer");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 

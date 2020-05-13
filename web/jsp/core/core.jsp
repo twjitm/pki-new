@@ -20,5 +20,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <script type="text/javascript" src="<%=path %>/lib/My97DatePicker/4.8/WdatePicker.js"></script>
     <script type="text/javascript" src="<%=path %>/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="<%=path %>/lib/layer/2.4/layer.js"></script>
+
+    <script type="text/javascript" src="<%=path %>/js/books/books.js"></script>
+
 </head>
 </html>

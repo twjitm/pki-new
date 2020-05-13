@@ -25,14 +25,17 @@ public class CABookService implements ICABookService {
     }
 
     @Override
-    public void updata(Cabook book) {
-        cabookDao.update(book);
-
+    public void update(Cabook book) {
+        String hql = "update Cabook c set c.caStart=:start,c.caUrl=:url where c.caId=:id";
+        Map<String, Object> params = new HashMap<>();
+         params.put("url", book.getCaUrl());
+        params.put("start", book.getCaStart());
+        params.put("id", book.getCaId());
+        cabookDao.update(hql, params);
     }
 
     @Override
     public List<Cabook> getBookByStart(Integer start) {
-        System.out.println("tttttttttttttttt" + start);
         String hql = "from Cabook c where c.caStart=:start order by c.caId desc";
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("start", start);
@@ -81,7 +84,8 @@ public class CABookService implements ICABookService {
 
     @Override
     public void delete(Cabook bookCabook) {
-        cabookDao.delete(bookCabook);
+        cabookDao.delete("delete from Cabook c where c.caId=" + bookCabook.getCaId());
+
     }
 
     public Cabook getCaBookById(int caBId) {

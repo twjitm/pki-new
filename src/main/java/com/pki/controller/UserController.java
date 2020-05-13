@@ -91,4 +91,10 @@ public class UserController extends BaseController {
         removeconcurrentUser(request);
         return "login";
     }
+
+    @RequestMapping("user")
+    public String user(HttpServletRequest request) {
+        request.setAttribute("infos", getconcurrentUser(request));
+        return  "/users/user";
+    }
 }
