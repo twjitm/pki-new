@@ -57,7 +57,17 @@
                     <td>${bottle.caC}</td>
                     <td>${bottle.caStorepass}</td>
                     <td>${bottle.caKeypass}</td>
-                    <td>${bottle.caStart}</td>
+                    <td>
+                        <c:if test="${bottle.caStart==0}">
+                        <p>审核中</p>
+                    </c:if>
+                        <c:if test="${bottle.caStart==1}">
+                            <p>审核通过</p>
+                        </c:if>
+                        <c:if test="${bottle.caStart==2}">
+                            <p>审核不通过</p>
+                        </c:if>
+                    </td>
                     <td>
                         <button class="btn btn-success radius" onclick="showJson(${bottle.caId})"  value="${bottle.caId}">查看</button>
                         <button class="btn btn-danger radius" onclick="deleteBook(${bottle.caId})" value="${bottle.caId}">删除</button>
