@@ -16,6 +16,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>校园 PKI 证书管理系统</title>
+    <link href="<%=path%>/css/cmd.css" rel="stylesheet" type="text/css">
     <jsp:include page="../core/core.jsp"/>
 </head>
 
@@ -83,6 +84,21 @@
             </tbody>
         </table>
     </div>
+    <div style="display: none">
+        <div class="window" id="window">
+            <div class="cmd-title">
+                <span>Script Processing Dos</span>
+            </div>
+            <div id="cmd_text">
+                <ul>
+                    <li>Welcome...</li>
+                    <li>login:</li>
+                </ul>
+                <input type="text" class="cmd-input" id="cmdInput">
+            </div>
+        </div>
+    </div>
+
 </div>
 <script type="text/javascript">
 

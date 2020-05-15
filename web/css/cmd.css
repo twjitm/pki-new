@@ -1,0 +1,40 @@
+@charset "utf-8";
+.window {
+    color: #fff;
+    border: 6px #ccc outset;
+    width: 680px;
+    height: 442px;
+    background-color: #000;
+    position: absolute;
+    top: 40px;
+    left: 68px;
+    overflow: hidden
+}
+
+.cmd-title {
+    background-color: #08246B;
+    padding: 2px;
+    color: cornsilk;
+}
+
+#cmd_text {
+    background-color: #000;
+    border-top: #ccc outset 2px;
+    height: 420px;
+    overflow-y: scroll;
+    color: cornsilk;
+}
+
+.window ul {
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+}
+
+.cmd-input {
+    background-color: #000;
+    border: 0;
+    color: #fff;
+    outline: none;
+    width: 100%
+}

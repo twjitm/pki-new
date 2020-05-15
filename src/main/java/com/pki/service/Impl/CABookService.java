@@ -37,7 +37,7 @@ public class CABookService implements ICABookService {
     @Override
     public List<Cabook> getBookByStart(Integer start) {
         String hql = "from Cabook c where c.caStart=:start order by c.caId desc";
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         map.put("start", start);
         return cabookDao.find(hql, map);
     }

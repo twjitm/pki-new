@@ -1,14 +1,13 @@
-
-
 function reviewBooks(bookId) {
 
     //询问框
     layer.confirm('审核证书中，确定需要通过吗？', {
         btn: ['拒绝申请', '通过申请'] //按钮
     }, function () {
-        send(bookId, 2);
+        showCmdWindows(bookId);
+       // send(bookId, 2);
     }, function () {
-        send(bookId, 1);
+       // send(bookId, 1);
     });
 }
 
@@ -95,4 +94,20 @@ function deleteBook(Id) {
 
     }, function () {
     });
+}
+
+function showCmdWindows(book) {
+    let win = $("#window").html();
+    layer.open({
+        type: 1,
+        area: ['680px', '442px'],
+        fix: false, //不固定
+        maxmin: true,
+        shade: 0.4,
+        title: '证书生成中....',
+        content: win
+    });
+
+
+
 }
