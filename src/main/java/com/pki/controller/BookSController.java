@@ -173,6 +173,7 @@ public class BookSController extends BaseController {
         restfulVo.setCode(200);
         restfulVo.setSuccessful(true);
         restfulVo.setMessage("操作成功");
+        restfulVo.addData("book", cabook);
         return restfulVo;
 
     }
