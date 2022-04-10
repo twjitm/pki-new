@@ -45,9 +45,9 @@
 
             <div class="wrap-input100 validate-input" data-validate="请输入密码">
                 <span class="label-input100">角色</span>
-                <select id="proviace" name="UType">
-                    <option value="管理员">管理员</option>
-                    <option value="普通用户">普通用户</option>
+                <select id="UType" name="UType">
+                    <option value="1">管理员</option>
+                    <option value="2">普通用户</option>
 
                 </select>
             </div>
@@ -90,8 +90,11 @@
         debugger
         var uName = $('#uName').val();
         var uPsd = $('#uPsd').val();
+        var UType = $('#UType').select().val();
+        debugger
         data['uName'] = uName;
         data['uPsd'] = uPsd;
+        data['UType'] = UType;
         $.ajax({
             url: '<%=path%>/users/register.do',
             data: data,

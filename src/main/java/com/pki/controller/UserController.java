@@ -43,8 +43,9 @@ public class UserController extends BaseController {
 
     @RequestMapping("register")
     public String register(HttpServletRequest request, User user) {
-        if (user == null || user.getUName() == null && user.getUType() == null) {
-            return "register";
+        if (user == null || user.getUId() == null) {
+            userService.register(user);
+            return "login";
         } else {
             //重复注册
             User logUser = userService.login(user.getUName(), user.getUPsd());
@@ -95,6 +96,6 @@ public class UserController extends BaseController {
     @RequestMapping("user")
     public String user(HttpServletRequest request) {
         request.setAttribute("infos", getconcurrentUser(request));
-        return  "/users/user";
+        return "/users/user";
     }
 }
